@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark" data-palette="amber">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NuevaMente - Flashcards Educativas con IA</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Encabezado de la Aplicación -->
+  <header class="app-header">
+    <div class="brand">
+      <h1>NuevaMente</h1>
+      <span class="badge">Hackathon ONE · G10</span>
+    </div>
+
+    <div class="header-actions">
+      <!-- Selector de Paleta de Color (Amarillos y Verdes) -->
+      <div class="header-select-group">
+        <label for="paletteSelector">Paleta:</label>
+        <select id="paletteSelector">
+          <option value="amber">Ámbar Solar & Oro</option>
+          <option value="forest">Verde Bosque & Salvia</option>
+          <option value="lime">Lima Eléctrica (Tech)</option>
+          <option value="emerald-gold">Esmeralda & Oro Dúo</option>
+        </select>
+      </div>
+
+      <!-- Selector de Modo Oscuro / Claro -->
+      <button class="theme-btn" id="btnTheme" title="Alternar Modo Claro / Oscuro">
+        <span id="themeBtnText">Modo Claro</span>
+      </button>
+
+      <!-- Selector de Conexión -->
+      <div class="header-select-group">
+        <label for="apiModeSelector">Conexión:</label>
+        <select id="apiModeSelector">
+          <option value="mock">Modo Mock (Simulado)</option>
+          <option value="real">Modo Backend Real (FastAPI)</option>
+        </select>
+      </div>
+    </div>
+  </header>
+
+  <!-- Contenedor Principal -->
+  <main class="main-container">
+    
+    <!-- Barra Lateral: Parámetros del Proyecto -->
+    <aside class="sidebar">
+      <h2>Parámetros de Adaptación</h2>
+      
+      <form id="adaptForm">
+        <!-- Nicho / Contexto -->
+        <div class="form-group">
+          <label for="nichoSector">Nicho o Especialidad</label>
+          <select id="nichoSector">
+            <option value="ia-principiante">Inteligencia Artificial (Fundamentos)</option>
+            <option value="datos-principiante">Ciencia de Datos y Ética</option>
+            <option value="web-principiante">Desarrollo Web (Frontend y Backend)</option>
+          </select>
+        </div>
+
+        <!-- Perfil del Destinatario -->
+        <div class="form-group">
+          <label for="perfilDestinatario">Perfil del Destinatario</label>
+          <select id="perfilDestinatario">
+            <option value="Principiante">Principiante / Transición de Carrera</option>
+            <option value="Junior">Desarrollador Junior / Semi Senior</option>
+            <option value="Arquitecto">Líder Técnico / Arquitecto</option>
+            <option value="Ejecutivo">Gestor / Ejecutivo (No Técnico)</option>
+          </select>
+        </div>
+
+        <!-- Formato Pedagógico -->
+        <div class="form-group">
+          <label for="formatoSalida">Formato Pedagógico</label>
+          <select id="formatoSalida">
+            <option value="Flashcards" selected>Flashcards de Memorización</option>
+            <option value="Tutorial">Guía Práctica Paso a Paso (Tutorial)</option>
+            <option value="Quiz">Quiz Interactivo con Justificaciones</option>
+            <option value="Resumen">Resumen Ejecutivo (TL;DR)</option>
+          </select>
+        </div>
+
+        <!-- Nivel de Detalle -->
+        <div class="form-group">
+          <label for="nivelDetalle">Nivel de Detalle</label>
+          <select id="nivelDetalle">
+            <option value="Didactico">Didáctico (con analogías)</option>
+            <option value="Tecnico">Técnico riguroso</option>
+          </select>
+        </div>
+
+        <!-- Documento o Entrada -->
+        <div class="form-group">
+          <label for="docContenido">Documento Técnico / Entrada</label>
+          <textarea id="docContenido" placeholder="Pega aquí documentación técnica o deja vacío para usar el contenido de muestra..."></textarea>
+        </div>
+
+        <button type="submit" class="btn-primary" id="btnGenerar">
+          <span>Generar Flashcards</span>
+        </button>
+      </form>
+    </aside>
+
+    <!-- Área de Aprendizaje con Flashcards -->
+    <section class="content-area">
+      
+      <!-- Banner de Metadatos Educativos -->
+      <div class="metadata-banner" id="metaBanner">
+        <div class="meta-header">
+          <h2 class="meta-title" id="metaTitle">Cargando contenido...</h2>
+          <div class="meta-badges">
+            <span class="badge-tag highlight" id="badgePerfil">Principiante</span>
+            <span class="badge-tag" id="badgeTiempo">5 min</span>
+          </div>
+        </div>
+        <p class="meta-intro" id="metaIntro">
+          Selecciona tus preferencias a la izquierda y pulsa "Generar Flashcards" para adaptar el contenido técnico.
+        </p>
+        <div class="concept-chips" id="conceptChips">
+          <!-- Chips inyectados por JS -->
+        </div>
+      </div>
+
+      <!-- Barra de Progreso Visual de la Baraja -->
+      <div class="deck-progress-bar-container">
+        <div class="deck-progress-bar-fill" id="deckProgressBar"></div>
+      </div>
+
+      <!-- Tarjeta 3D Interactiva -->
+      <div class="card-scene">
+        <div class="flashcard" id="currentCard">
+          
+          <!-- Cara Frontal (Frente: Pregunta) -->
+          <div class="card-face card-face-front">
+            <div class="card-top-tag">
+              <span class="pill">Concepto</span>
+              <span id="cardProgressTop">1 / 4</span>
+            </div>
+            <div class="card-body">
+              <h3 class="card-question" id="cardFrontText">Cargando pregunta...</h3>
+            </div>
+            <div class="card-footer-tip">
+              <span>Haz clic o presiona <b>Espacio</b> para voltear</span>
+            </div>
+          </div>
+
+          <!-- Cara Posterior (Dorso: Explicación y Pista) -->
+          <div class="card-face card-face-back">
+            <div class="card-top-tag">
+              <span class="pill">Explicación</span>
+              <span>Respuesta</span>
+            </div>
+            <div class="card-body">
+              <p class="card-answer" id="cardBackText">Cargando respuesta...</p>
+              
+              <!-- Pista didáctica -->
+              <div class="card-hint-box" id="hintBox">
+                <span class="hint-label">Pista didáctica</span>
+                <p id="cardHintText">Pista...</p>
+              </div>
+            </div>
+            <div class="card-footer-tip">
+              <span>Haz clic para volver a la pregunta</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Controles de la Baraja -->
+      <div class="deck-controls">
+        <button class="control-btn" id="btnPrev" disabled>
+          <span>← Anterior</span>
+        </button>
+        <span class="card-counter" id="cardCounter">Tarjeta 1 de 4</span>
+        <button class="control-btn" id="btnFlip">
+          <span>Voltear</span>
+        </button>
+        <button class="control-btn" id="btnNext">
+          <span>Siguiente →</span>
+        </button>
+      </div>
+
+      <!-- Barra de Estado del Sistema & OCI -->
+      <div class="system-status-bar">
+        <div class="status-indicator">
+          <div class="status-dot"></div>
+          <span id="ociStatusText">OCI Object Storage: Conectado (Always Free)</span>
+        </div>
+        <div>
+          <span id="qualityScoreText">Score de Anclaje RAG: 99%</span>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- Overlay de Carga Simulado -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="spinner"></div>
+    <h3 id="loadingStatusText" style="font-size: 1.1rem; font-weight: 600;">Segmentando documento con RAG...</h3>
+    <p style="color: var(--text-muted); font-size: 0.88rem;">Adaptando pedagogía según el perfil seleccionado</p>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

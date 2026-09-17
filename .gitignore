@@ -1,0 +1,21 @@
+# Entornos virtuales y Python
+__pycache__/
+*.py[cod]
+*$py.class
+.env
+.venv
+env/
+venv/
+
+# Node & Builds
+node_modules/
+dist/
+
+# Sistema y Editores
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+#pdf
+Nuevamente Proyecto.pdf
