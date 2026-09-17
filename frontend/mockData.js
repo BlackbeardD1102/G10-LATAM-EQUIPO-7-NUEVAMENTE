@@ -130,5 +130,46 @@ export const mockDatabase = {
       "objeto_id": "contenido-web-fundamentos-001.json",
       "status_upload": "completado"
     }
+  },
+
+  "devops-principiante": {
+    "status": "exito",
+    "metadatos": {
+      "perfil_aplicado": "Principiante",
+      "formato_generado": "Flashcards",
+      "tiempo_estimado_estudio_minutos": 6,
+      "conceptos_clave": ["Docker", "CI/CD", "Kubernetes", "OCI Cloud"]
+    },
+    "contenido_adaptado": {
+      "titulo": "DevOps e Infraestructura Cloud con OCI",
+      "introduccion_contextualizada": "DevOps une el desarrollo de código con las operaciones de infraestructura, permitiendo entregas continuas y seguras en la nube.",
+      "items": [
+        {
+          "frente": "¿Qué problema resuelve Docker con los contenedores?",
+          "dorso": "Empaqueta la aplicación con todas sus librerías y dependencias exactas, asegurando que funcione idéntico en tu computadora y en la nube de producción.",
+          "pista_didactica": "Elimina la clásica excusa de 'en mi máquina sí funciona'."
+        },
+        {
+          "frente": "¿Qué significa el ciclo de CI/CD (Integración y Despliegue Continuo)?",
+          "dorso": "Es un pipeline automatizado que prueba, valida y despliega código a servidores cada vez que un desarrollador sube cambios a Git.",
+          "pista_didactica": "Es como una cinta transportadora de fábrica que somete el producto a control de calidad antes de empaquetarlo."
+        },
+        {
+          "frente": "¿Qué rol cumple OCI Object Storage en la nube de Oracle?",
+          "dorso": "Es un servicio de almacenamiento en la nube de alta disponibilidad para guardar cualquier tipo de archivo (PDFs, JSONs, imágenes) accesible de forma segura y escalable.",
+          "pista_didactica": "Es el disco rígido infinito y seguro de tu arquitectura cloud."
+        }
+      ]
+    },
+    "evaluacion_calidad": {
+      "anclaje_fuente_score": 0.99,
+      "claridad_pedagogica": "Alta",
+      "observaciones": "Analogías prácticas centradas en infraestructura moderna y OCI."
+    },
+    "almacenamiento_oci": {
+      "bucket": "nuevamente-contenidos-educativos",
+      "objeto_id": "contenido-devops-oci-001.json",
+      "status_upload": "completado"
+    }
   }
 };

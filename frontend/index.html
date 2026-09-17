@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="es" data-theme="dark" data-palette="amber">
+<html lang="es" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NuevaMente - Flashcards Educativas con IA</title>
+  <title>NuevaMente - Cuaderno Interactivo con Flashcards</title>
   <link rel="stylesheet" href="style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Caveat:wght@700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-  <!-- Encabezado de la Aplicación -->
+  <!-- Encabezado -->
   <header class="app-header">
     <div class="brand">
       <h1>NuevaMente</h1>
@@ -19,194 +19,133 @@
     </div>
 
     <div class="header-actions">
-      <!-- Selector de Paleta de Color (Amarillos y Verdes) -->
-      <div class="header-select-group">
-        <label for="paletteSelector">Paleta:</label>
-        <select id="paletteSelector">
-          <option value="amber">Ámbar Solar & Oro</option>
-          <option value="forest">Verde Bosque & Salvia</option>
-          <option value="lime">Lima Eléctrica (Tech)</option>
-          <option value="emerald-gold">Esmeralda & Oro Dúo</option>
-        </select>
-      </div>
-
-      <!-- Selector de Modo Oscuro / Claro -->
-      <button class="theme-btn" id="btnTheme" title="Alternar Modo Claro / Oscuro">
-        <span id="themeBtnText">Modo Claro</span>
-      </button>
-
-      <!-- Selector de Conexión -->
+      <!-- Selector de Modo de Conexión -->
       <div class="header-select-group">
         <label for="apiModeSelector">Conexión:</label>
         <select id="apiModeSelector">
-          <option value="mock">Modo Mock (Simulado)</option>
+          <option value="mock">Modo Mock (Datos Simulados)</option>
           <option value="real">Modo Backend Real (FastAPI)</option>
         </select>
       </div>
+
+      <!-- Botón de Tema -->
+      <button class="theme-btn" id="btnTheme" title="Alternar Modo Claro / Oscuro">
+        <span id="themeBtnText">Modo Claro</span>
+      </button>
     </div>
   </header>
 
-  <!-- Contenedor Principal -->
-  <main class="main-container">
+  <!-- Contenedor Principal del Cuaderno -->
+  <main class="desk-container">
     
-    <!-- Barra Lateral: Parámetros del Proyecto -->
-    <aside class="sidebar">
-      <h2>Parámetros de Adaptación</h2>
-      
-      <form id="adaptForm">
-        <!-- Nicho / Contexto -->
-        <div class="form-group">
-          <label for="nichoSector">Nicho o Especialidad</label>
-          <select id="nichoSector">
-            <option value="ia-principiante">Inteligencia Artificial (Fundamentos)</option>
-            <option value="datos-principiante">Ciencia de Datos y Ética</option>
-            <option value="web-principiante">Desarrollo Web (Frontend y Backend)</option>
-          </select>
+    <!-- Barra de Instrucciones Superior -->
+    <div class="desk-guide-bar" id="deskGuide">
+      <p id="guideText">👆 <b>Haz clic en cualquier cuadrante del cuaderno</b> (Frontend, Backend, Data Science o DevOps) para enfocar y estudiar sus Flashcards.</p>
+      <button class="btn-zoom-out" id="btnZoomOut" style="display: none;">
+        ← Ver Cuaderno Completo
+      </button>
+    </div>
+
+    <!-- Escenario del Escritorio con Cámara 3D -->
+    <div class="desk-viewport" id="deskViewport">
+      <div class="notebook-camera" id="notebookCamera">
+        
+        <!-- Imagen Real de tu Cuaderno -->
+        <img src="fondo.jpg" alt="Cuaderno Tech" class="notebook-img">
+
+        <!-- Cuadrante 1: FRONTEND (Arriba Izquierda) -->
+        <div class="quadrant-hotspot hotspot-frontend" data-sector="frontend">
+          <div class="hotspot-highlight"></div>
+          <span class="hotspot-tag">Estudiar Frontend</span>
         </div>
 
-        <!-- Perfil del Destinatario -->
-        <div class="form-group">
-          <label for="perfilDestinatario">Perfil del Destinatario</label>
-          <select id="perfilDestinatario">
-            <option value="Principiante">Principiante / Transición de Carrera</option>
-            <option value="Junior">Desarrollador Junior / Semi Senior</option>
-            <option value="Arquitecto">Líder Técnico / Arquitecto</option>
-            <option value="Ejecutivo">Gestor / Ejecutivo (No Técnico)</option>
-          </select>
+        <!-- Cuadrante 2: BACKEND (Abajo Izquierda) -->
+        <div class="quadrant-hotspot hotspot-backend" data-sector="backend">
+          <div class="hotspot-highlight"></div>
+          <span class="hotspot-tag">Estudiar Backend</span>
         </div>
 
-        <!-- Formato Pedagógico -->
-        <div class="form-group">
-          <label for="formatoSalida">Formato Pedagógico</label>
-          <select id="formatoSalida">
-            <option value="Flashcards" selected>Flashcards de Memorización</option>
-            <option value="Tutorial">Guía Práctica Paso a Paso (Tutorial)</option>
-            <option value="Quiz">Quiz Interactivo con Justificaciones</option>
-            <option value="Resumen">Resumen Ejecutivo (TL;DR)</option>
-          </select>
+        <!-- Cuadrante 3: DATA SCIENCE (Arriba Derecha) -->
+        <div class="quadrant-hotspot hotspot-datascience" data-sector="datascience">
+          <div class="hotspot-highlight"></div>
+          <span class="hotspot-tag">Estudiar Data Science & IA</span>
         </div>
 
-        <!-- Nivel de Detalle -->
-        <div class="form-group">
-          <label for="nivelDetalle">Nivel de Detalle</label>
-          <select id="nivelDetalle">
-            <option value="Didactico">Didáctico (con analogías)</option>
-            <option value="Tecnico">Técnico riguroso</option>
-          </select>
+        <!-- Cuadrante 4: DEVOPS (Abajo Derecha) -->
+        <div class="quadrant-hotspot hotspot-devops" data-sector="devops">
+          <div class="hotspot-highlight"></div>
+          <span class="hotspot-tag">Estudiar DevOps & Cloud</span>
         </div>
 
-        <!-- Documento o Entrada -->
-        <div class="form-group">
-          <label for="docContenido">Documento Técnico / Entrada</label>
-          <textarea id="docContenido" placeholder="Pega aquí documentación técnica o deja vacío para usar el contenido de muestra..."></textarea>
-        </div>
-
-        <button type="submit" class="btn-primary" id="btnGenerar">
-          <span>Generar Flashcards</span>
-        </button>
-      </form>
-    </aside>
-
-    <!-- Área de Aprendizaje con Flashcards -->
-    <section class="content-area">
-      
-      <!-- Banner de Metadatos Educativos -->
-      <div class="metadata-banner" id="metaBanner">
-        <div class="meta-header">
-          <h2 class="meta-title" id="metaTitle">Cargando contenido...</h2>
-          <div class="meta-badges">
-            <span class="badge-tag highlight" id="badgePerfil">Principiante</span>
-            <span class="badge-tag" id="badgeTiempo">5 min</span>
-          </div>
-        </div>
-        <p class="meta-intro" id="metaIntro">
-          Selecciona tus preferencias a la izquierda y pulsa "Generar Flashcards" para adaptar el contenido técnico.
-        </p>
-        <div class="concept-chips" id="conceptChips">
-          <!-- Chips inyectados por JS -->
-        </div>
       </div>
 
-      <!-- Barra de Progreso Visual de la Baraja -->
-      <div class="deck-progress-bar-container">
-        <div class="deck-progress-bar-fill" id="deckProgressBar"></div>
-      </div>
-
-      <!-- Tarjeta 3D Interactiva -->
-      <div class="card-scene">
-        <div class="flashcard" id="currentCard">
-          
-          <!-- Cara Frontal (Frente: Pregunta) -->
-          <div class="card-face card-face-front">
-            <div class="card-top-tag">
-              <span class="pill">Concepto</span>
-              <span id="cardProgressTop">1 / 4</span>
-            </div>
-            <div class="card-body">
-              <h3 class="card-question" id="cardFrontText">Cargando pregunta...</h3>
-            </div>
-            <div class="card-footer-tip">
-              <span>Haz clic o presiona <b>Espacio</b> para voltear</span>
-            </div>
-          </div>
-
-          <!-- Cara Posterior (Dorso: Explicación y Pista) -->
-          <div class="card-face card-face-back">
-            <div class="card-top-tag">
-              <span class="pill">Explicación</span>
-              <span>Respuesta</span>
-            </div>
-            <div class="card-body">
-              <p class="card-answer" id="cardBackText">Cargando respuesta...</p>
-              
-              <!-- Pista didáctica -->
-              <div class="card-hint-box" id="hintBox">
-                <span class="hint-label">Pista didáctica</span>
-                <p id="cardHintText">Pista...</p>
+      <!-- Capa 2: Tarjeta Nítida en Primer Plano (Sin distorsión de zoom) -->
+      <div class="in-place-card-container" id="inPlaceCardContainer">
+        <div class="flashcard-wrapper">
+          <div class="flashcard" id="currentCard">
+            
+            <!-- Cara Frontal (Pregunta) -->
+            <div class="card-face card-face-front">
+              <div class="card-top-tag">
+                <span class="pill" id="cardSectorPill">Frontend</span>
+                <span id="cardProgressTop">1 / 4</span>
+              </div>
+              <div class="card-body">
+                <h3 class="card-question" id="cardFrontText">Cargando pregunta...</h3>
+              </div>
+              <div class="card-footer-tip">
+                <span>Haz clic o presiona <b>Espacio</b> para voltear</span>
               </div>
             </div>
-            <div class="card-footer-tip">
-              <span>Haz clic para volver a la pregunta</span>
+
+            <!-- Cara Posterior (Respuesta y Pista) -->
+            <div class="card-face card-face-back">
+              <div class="card-top-tag">
+                <span class="pill">Explicación Didáctica</span>
+                <span>Respuesta</span>
+              </div>
+              <div class="card-body">
+                <p class="card-answer" id="cardBackText">Cargando respuesta...</p>
+                <div class="card-hint-box" id="hintBox">
+                  <span class="hint-label">Pista didáctica / Analogía</span>
+                  <p id="cardHintText">Pista...</p>
+                </div>
+              </div>
+              <div class="card-footer-tip">
+                <span>Haz clic para volver a la pregunta</span>
+              </div>
             </div>
+
           </div>
-
         </div>
       </div>
+    </div>
 
-      <!-- Controles de la Baraja -->
-      <div class="deck-controls">
-        <button class="control-btn" id="btnPrev" disabled>
-          <span>← Anterior</span>
-        </button>
-        <span class="card-counter" id="cardCounter">Tarjeta 1 de 4</span>
-        <button class="control-btn" id="btnFlip">
-          <span>Voltear</span>
-        </button>
-        <button class="control-btn" id="btnNext">
-          <span>Siguiente →</span>
-        </button>
+    <!-- Controles de Navegación de Flashcards (Se activan al hacer zoom) -->
+    <div class="desk-deck-controls" id="deckControls" style="display: none;">
+      <button class="control-btn" id="btnPrev" disabled>← Anterior</button>
+      <span class="card-counter" id="cardCounter">Tarjeta 1 de 4</span>
+      <button class="control-btn" id="btnFlip">Voltear Tarjeta</button>
+      <button class="control-btn" id="btnNext">Siguiente →</button>
+    </div>
+
+    <!-- Barra de Estado OCI -->
+    <div class="system-status-bar">
+      <div class="status-indicator">
+        <div class="status-dot"></div>
+        <span id="ociStatusText">Almacenamiento OCI: Conectado (Always Free)</span>
       </div>
-
-      <!-- Barra de Estado del Sistema & OCI -->
-      <div class="system-status-bar">
-        <div class="status-indicator">
-          <div class="status-dot"></div>
-          <span id="ociStatusText">OCI Object Storage: Conectado (Always Free)</span>
-        </div>
-        <div>
-          <span id="qualityScoreText">Score de Anclaje RAG: 99%</span>
-        </div>
+      <div>
+        <span id="qualityScoreText">Score de Anclaje RAG: 98%</span>
       </div>
-
-    </section>
+    </div>
 
   </main>
 
-  <!-- Overlay de Carga Simulado -->
+  <!-- Overlay de Carga -->
   <div class="loading-overlay" id="loadingOverlay">
     <div class="spinner"></div>
-    <h3 id="loadingStatusText" style="font-size: 1.1rem; font-weight: 600;">Segmentando documento con RAG...</h3>
-    <p style="color: var(--text-muted); font-size: 0.88rem;">Adaptando pedagogía según el perfil seleccionado</p>
+    <h3 id="loadingStatusText" style="font-size: 1.1rem; font-weight: 600;">Enfocando módulo con RAG...</h3>
   </div>
 
   <script type="module" src="app.js"></script>
