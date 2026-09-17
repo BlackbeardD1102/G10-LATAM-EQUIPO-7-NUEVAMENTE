@@ -19,6 +19,13 @@ const elements = {
   themeBtnText: document.getElementById('themeBtnText'),
   apiModeSelector: document.getElementById('apiModeSelector'),
   
+  // Pantalla de Inicio
+  welcomeScreen: document.getElementById('welcomeScreen'),
+  welcomeViewport: document.getElementById('welcomeViewport'),
+  btnOpenNotebook: document.getElementById('btnOpenNotebook'),
+  mainDeskContainer: document.getElementById('mainDeskContainer'),
+  btnCloseNotebook: document.getElementById('btnCloseNotebook'),
+
   // Controles de Cámara y Zoom
   notebookCamera: document.getElementById('notebookCamera'),
   deskViewport: document.getElementById('deskViewport'),
@@ -67,7 +74,26 @@ function toggleTheme() {
   elements.themeBtnText.textContent = state.theme === 'dark' ? 'Modo Claro' : 'Modo Oscuro';
 }
 
+function openNotebook() {
+  elements.welcomeScreen.style.display = 'none';
+  elements.mainDeskContainer.style.display = 'flex';
+}
+
+function closeNotebook() {
+  unzoomNotebook();
+  elements.mainDeskContainer.style.display = 'none';
+  elements.welcomeScreen.style.display = 'flex';
+}
+
 function setupEventListeners() {
+  // Abrir y cerrar cuaderno
+  elements.btnOpenNotebook.addEventListener('click', (e) => {
+    e.stopPropagation();
+    openNotebook();
+  });
+  elements.welcomeViewport.addEventListener('click', openNotebook);
+  elements.btnCloseNotebook.addEventListener('click', closeNotebook);
+
   // Cambio de tema
   elements.btnTheme.addEventListener('click', toggleTheme);
 

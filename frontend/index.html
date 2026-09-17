@@ -35,15 +35,34 @@
     </div>
   </header>
 
-  <!-- Contenedor Principal del Cuaderno -->
-  <main class="desk-container">
+  <!-- Pantalla de Inicio: Cuaderno Cerrado -->
+  <section class="welcome-screen" id="welcomeScreen">
+    <div class="welcome-desk-viewport" id="welcomeViewport" title="Haz clic para abrir el cuaderno">
+      <img src="pantalla de inicio.jpg" alt="Cuaderno Cerrado NuevaMente" class="welcome-img">
+      
+      <!-- Botón de Llamado a la Acción -->
+      <div class="welcome-cta-container">
+        <button class="btn-open-notebook" id="btnOpenNotebook">
+          <span>Abrir Cuaderno para Estudiar</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contenedor Principal del Cuaderno Abierto -->
+  <main class="desk-container" id="mainDeskContainer" style="display: none;">
     
     <!-- Barra de Instrucciones Superior -->
     <div class="desk-guide-bar" id="deskGuide">
       <p id="guideText">👆 <b>Haz clic en cualquier cuadrante del cuaderno</b> (Frontend, Backend, Data Science o DevOps) para enfocar y estudiar sus Flashcards.</p>
-      <button class="btn-zoom-out" id="btnZoomOut" style="display: none;">
-        ← Ver Cuaderno Completo
-      </button>
+      <div class="guide-actions">
+        <button class="btn-zoom-out" id="btnZoomOut" style="display: none;">
+          ← Ver Cuaderno Completo
+        </button>
+        <button class="btn-close-notebook" id="btnCloseNotebook">
+          Cerrar Cuaderno
+        </button>
+      </div>
     </div>
 
     <!-- Escenario del Escritorio con Cámara 3D -->
