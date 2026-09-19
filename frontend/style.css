@@ -1,0 +1,662 @@
+/* style.css - Cuaderno Interactivo con Zoom y Flashcards */
+
+:root {
+  --bg-desk: #0b0f14;
+  --surface-ui: #131924;
+  --border-ui: rgba(255, 255, 255, 0.1);
+  --text-main: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  
+  --accent-gold: #f59e0b;
+  --accent-green: #10b981;
+  --accent-cyan: #06b6d4;
+
+  --card-front-bg: linear-gradient(145deg, #182234, #0f1724);
+  --card-back-bg: linear-gradient(145deg, #1d2b40, #131d2d);
+  --hint-bg: rgba(245, 158, 11, 0.12);
+  --hint-border: #f59e0b;
+  --hint-text: #fde68a;
+
+  --shadow-card: 0 25px 50px rgba(0, 0, 0, 0.7);
+}
+
+[data-theme="light"] {
+  --bg-desk: #e2e8f0;
+  --surface-ui: #ffffff;
+  --border-ui: rgba(15, 23, 42, 0.12);
+  --text-main: #0f172a;
+  --text-secondary: #334155;
+  --text-muted: #64748b;
+
+  --card-front-bg: linear-gradient(145deg, #ffffff, #f8fafc);
+  --card-back-bg: linear-gradient(145deg, #ffffff, #fefce8);
+  --hint-bg: rgba(245, 158, 11, 0.08);
+  --hint-border: #d97706;
+  --hint-text: #854d0e;
+
+  --shadow-card: 0 20px 40px rgba(15, 23, 42, 0.15);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg-desk);
+  color: var(--text-main);
+  font-family: 'Inter', -apple-system, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  transition: background-color 0.3s ease;
+}
+
+/* Header */
+.app-header {
+  border-bottom: 1px solid var(--border-ui);
+  backdrop-filter: blur(12px);
+  background: rgba(19, 25, 36, 0.85);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 0.85rem 2.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+[data-theme="light"] .app-header {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.brand h1 {
+  font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, #f59e0b, #10b981);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.brand .badge {
+  font-size: 0.72rem;
+  background: rgba(245, 158, 11, 0.15);
+  color: var(--accent-gold);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-weight: 700;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.header-select-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--surface-ui);
+  padding: 0.4rem 0.8rem;
+  border-radius: 10px;
+  border: 1px solid var(--border-ui);
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+}
+
+.header-select-group select {
+  background: transparent;
+  border: none;
+  color: var(--accent-gold);
+  font-weight: 700;
+  outline: none;
+  cursor: pointer;
+}
+
+.theme-btn {
+  background: var(--surface-ui);
+  border: 1px solid var(--border-ui);
+  color: var(--text-main);
+  padding: 0.45rem 0.9rem;
+  border-radius: 10px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.theme-btn:hover {
+  border-color: var(--accent-gold);
+}
+
+/* ==========================================================================
+   PANTALLA DE INICIO: CUADERNO CERRADO
+   ========================================================================== */
+.welcome-screen {
+  max-width: 1200px;
+  width: 100%;
+  margin: 1.5rem auto;
+  padding: 0 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  flex: 1;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.welcome-desk-viewport {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.75);
+  border: 1px solid var(--border-ui);
+  background: #1e150d;
+  cursor: pointer;
+}
+
+.welcome-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.welcome-desk-viewport:hover .welcome-img {
+  transform: scale(1.025);
+}
+
+.welcome-cta-container {
+  position: absolute;
+  bottom: 8%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.btn-open-notebook {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: #1a1202;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 1rem 2.4rem;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 1.05rem;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(245, 158, 11, 0.45);
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  letter-spacing: 0.02em;
+}
+
+.btn-open-notebook:hover {
+  transform: translateY(-3px) scale(1.04);
+  box-shadow: 0 15px 35px rgba(245, 158, 11, 0.6);
+  filter: brightness(1.1);
+}
+
+.btn-open-notebook:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* Contenedor del Escritorio */
+.desk-container {
+  max-width: 1200px;
+  width: 100%;
+  margin: 1.5rem auto;
+  padding: 0 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  flex: 1;
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.desk-guide-bar {
+  background: var(--surface-ui);
+  border: 1px solid var(--border-ui);
+  border-radius: 14px;
+  padding: 0.85rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.95rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.guide-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.btn-zoom-out {
+  background: var(--accent-gold);
+  color: #1a1202;
+  border: none;
+  padding: 0.5rem 1.1rem;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-zoom-out:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.1);
+}
+
+.btn-close-notebook {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-main);
+  border: 1px solid var(--border-ui);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-close-notebook:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: var(--accent-gold);
+  color: var(--accent-gold);
+}
+
+/* Visor del Cuaderno (Viewport con recorte) */
+.desk-viewport {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7);
+  border: 1px solid var(--border-ui);
+  background: #1e150d;
+}
+
+/* Cámara con Zoom y Paneo */
+.notebook-camera {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-origin: center center;
+  transition: transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.notebook-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  user-select: none;
+}
+
+/* Clases de Zoom Cinemático según cuadrante */
+.notebook-camera.zoom-frontend {
+  transform: scale(2.25) translate(22%, 22%);
+}
+
+.notebook-camera.zoom-backend {
+  transform: scale(2.25) translate(22%, -22%);
+}
+
+.notebook-camera.zoom-datascience {
+  transform: scale(2.25) translate(-22%, 22%);
+}
+
+.notebook-camera.zoom-devops {
+  transform: scale(2.25) translate(-22%, -22%);
+}
+
+/* Hotspots (Zonas Clickeables del Cuaderno) */
+.quadrant-hotspot {
+  position: absolute;
+  cursor: pointer;
+  z-index: 20;
+  transition: all 0.3s ease;
+}
+
+/* Coordenadas precisas del cuaderno */
+.hotspot-frontend {
+  top: 14%;
+  left: 15%;
+  width: 34%;
+  height: 38%;
+}
+
+.hotspot-backend {
+  top: 52%;
+  left: 15%;
+  width: 34%;
+  height: 38%;
+}
+
+.hotspot-datascience {
+  top: 14%;
+  left: 51%;
+  width: 34%;
+  height: 38%;
+}
+
+.hotspot-devops {
+  top: 52%;
+  left: 51%;
+  width: 34%;
+  height: 38%;
+}
+
+/* Efecto Hover en Hotspots */
+.hotspot-highlight {
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  border: 2px dashed rgba(245, 158, 11, 0.4);
+  background: rgba(245, 158, 11, 0.04);
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.quadrant-hotspot:hover .hotspot-highlight {
+  opacity: 1;
+  border-style: solid;
+  border-color: var(--accent-gold);
+  background: rgba(245, 158, 11, 0.12);
+  box-shadow: 0 0 25px rgba(245, 158, 11, 0.3);
+}
+
+.hotspot-tag {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  background: rgba(11, 15, 20, 0.85);
+  color: var(--accent-gold);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  border: 1px solid var(--accent-gold);
+  opacity: 0;
+  transform: translateY(5px);
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+.quadrant-hotspot:hover .hotspot-tag {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Ocultar hotspots cuando la cámara tiene zoom */
+.notebook-camera[class*="zoom-"] .quadrant-hotspot {
+  display: none;
+}
+
+/* ==========================================================================
+   CAPA DE LA FLASHCARD FLOTANTE (100% Nítida y Proporcionada)
+   ========================================================================== */
+.in-place-card-container {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: rgba(10, 14, 20, 0.4);
+  backdrop-filter: blur(2px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+
+.in-place-card-container.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+[data-theme="light"] .in-place-card-container {
+  background: rgba(255, 255, 255, 0.45);
+}
+
+.flashcard-wrapper {
+  width: 100%;
+  max-width: 560px;
+  height: 330px;
+  perspective: 1400px;
+}
+
+/* Tarjeta Flashcard 3D */
+.flashcard {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transition: transform 0.65s cubic-bezier(0.34, 1.35, 0.64, 1);
+  transform-style: preserve-3d;
+  cursor: pointer;
+}
+
+.flashcard.flipped {
+  transform: rotateY(180deg);
+}
+
+.card-face {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 18px;
+  border: 1px solid rgba(245, 158, 11, 0.5);
+  padding: 2rem 2.25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 25px 50px -10px rgba(0, 0, 0, 0.65);
+}
+
+.card-face-front {
+  background: var(--card-front-bg);
+  border-top: 4px solid var(--accent-gold);
+}
+
+.card-face-back {
+  background: var(--card-back-bg);
+  border-top: 4px solid var(--accent-green);
+  transform: rotateY(180deg);
+}
+
+.card-top-tag {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.card-top-tag .pill {
+  background: rgba(245, 158, 11, 0.15);
+  color: var(--accent-gold);
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.card-body {
+  margin: auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.card-question {
+  font-size: 1.4rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--text-main);
+  text-align: center;
+}
+
+.card-answer {
+  font-size: 1.05rem;
+  line-height: 1.55;
+  color: var(--text-main);
+}
+
+.card-hint-box {
+  background: var(--hint-bg);
+  border-left: 3px solid var(--hint-border);
+  padding: 0.65rem 0.9rem;
+  border-radius: 8px;
+}
+
+.card-hint-box .hint-label {
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--hint-border);
+  display: block;
+  margin-bottom: 0.2rem;
+}
+
+.card-hint-box p {
+  font-size: 0.85rem;
+  color: var(--hint-text);
+  line-height: 1.4;
+}
+
+.card-footer-tip {
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.card-footer-tip {
+  text-align: center;
+  font-size: 0.62rem;
+  color: var(--text-muted);
+}
+
+/* Controles de la Baraja */
+.desk-deck-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--surface-ui);
+  border: 1px solid var(--border-ui);
+  border-radius: 14px;
+  padding: 0.75rem 1.5rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.control-btn {
+  background: var(--surface-ui);
+  border: 1px solid var(--border-ui);
+  color: var(--text-main);
+  padding: 0.65rem 1.25rem;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.control-btn:hover:not(:disabled) {
+  background: var(--accent-gold);
+  color: #1a1202;
+  border-color: var(--accent-gold);
+}
+
+.control-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.card-counter {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+/* Barra de Estado OCI */
+.system-status-bar {
+  background: var(--surface-ui);
+  border: 1px solid var(--border-ui);
+  border-radius: 12px;
+  padding: 0.75rem 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 8px #10b981;
+}
+
+/* Overlay de Carga */
+.loading-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(11, 15, 20, 0.85);
+  backdrop-filter: blur(8px);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.loading-overlay.active {
+  display: flex;
+}
+
+.spinner {
+  width: 45px;
+  height: 45px;
+  border: 3px solid rgba(245, 158, 11, 0.2);
+  border-top-color: var(--accent-gold);
+  border-radius: 50%;
+  animation: spin 0.9s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

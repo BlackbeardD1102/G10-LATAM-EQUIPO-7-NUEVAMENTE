@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NuevaMente - Cuaderno Interactivo con Flashcards</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Caveat:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Encabezado -->
+  <header class="app-header">
+    <div class="brand">
+      <h1>NuevaMente</h1>
+      <span class="badge">Hackathon ONE · G10</span>
+    </div>
+
+    <div class="header-actions">
+      <!-- Selector de Modo de Conexión -->
+      <div class="header-select-group">
+        <label for="apiModeSelector">Conexión:</label>
+        <select id="apiModeSelector">
+          <option value="mock">Modo Mock (Datos Simulados)</option>
+          <option value="real">Modo Backend Real (FastAPI)</option>
+        </select>
+      </div>
+
+      <!-- Botón de Tema -->
+      <button class="theme-btn" id="btnTheme" title="Alternar Modo Claro / Oscuro">
+        <span id="themeBtnText">Modo Claro</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Pantalla de Inicio: Cuaderno Cerrado -->
+  <section class="welcome-screen" id="welcomeScreen">
+    <div class="welcome-desk-viewport" id="welcomeViewport" title="Haz clic para abrir el cuaderno">
+      <img src="pantalla de inicio.jpg" alt="Cuaderno Cerrado NuevaMente" class="welcome-img">
+      
+      <!-- Botón de Llamado a la Acción -->
+      <div class="welcome-cta-container">
+        <button class="btn-open-notebook" id="btnOpenNotebook">
+          <span>Abrir Cuaderno para Estudiar</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contenedor Principal del Cuaderno Abierto -->
+  <main class="desk-container" id="mainDeskContainer" style="display: none;">
+    
+    <!-- Barra de Instrucciones Superior -->
+    <div class="desk-guide-bar" id="deskGuide">
+      <p id="guideText">👆 <b>Haz clic en cualquier cuadrante del cuaderno</b> (Frontend, Backend, Data Science o DevOps) para enfocar y estudiar sus Flashcards.</p>
+      <div class="guide-actions">
+        <button class="btn-zoom-out" id="btnZoomOut" style="display: none;">
+          ← Ver Cuaderno Completo
+        </button>
+        <button class="btn-close-notebook" id="btnCloseNotebook">
+          Cerrar Cuaderno
+        </button>
+      </div>
+    </div>
+
+    <!-- Escenario del Escritorio con Cámara 3D -->
+    <div class="desk-viewport" id="deskViewport">
+      <div class="notebook-camera" id="notebookCamera">
+        
+        <!-- Imagen Real de tu Cuaderno -->
+        <img src="fondo.jpg" alt="Cuaderno Tech" class="notebook-img">
+
+        <!-- Cuadrante 1: FRONTEND (Arriba Izquierda) -->
+        <div class="quadrant-hotspot hotspot-frontend" data-sector="frontend">
+          <div class="hotspot-highlight"></div>
+          <span class="hotspot-tag">Estudiar Frontend</span>
+        </div>
+
+        <!-- Cuadrante 2: BACKEND (Abajo Izquierda) -->
+        <div class="quadrant-hotspot hotspot-backend" data-sector="backend">
+          <div class="hotspot-highlight"></div>
+          <span class="hotspot-tag">Estudiar Backend</span>
+        </div>
+
+        <!-- Cuadrante 3: DATA SCIENCE (Arriba Derecha) -->
+        <div class="quadrant-hotspot hotspot-datascience" data-sector="datascience">
+          <div class="hotspot-highlight"></div>
+          <span class="hotspot-tag">Estudiar Data Science & IA</span>
+        </div>
+
+        <!-- Cuadrante 4: DEVOPS (Abajo Derecha) -->
+        <div class="quadrant-hotspot hotspot-devops" data-sector="devops">
+          <div class="hotspot-highlight"></div>
+          <span class="hotspot-tag">Estudiar DevOps & Cloud</span>
+        </div>
+
+      </div>
+
+      <!-- Capa 2: Tarjeta Nítida en Primer Plano (Sin distorsión de zoom) -->
+      <div class="in-place-card-container" id="inPlaceCardContainer">
+        <div class="flashcard-wrapper">
+          <div class="flashcard" id="currentCard">
+            
+            <!-- Cara Frontal (Pregunta) -->
+            <div class="card-face card-face-front">
+              <div class="card-top-tag">
+                <span class="pill" id="cardSectorPill">Frontend</span>
+                <span id="cardProgressTop">1 / 4</span>
+              </div>
+              <div class="card-body">
+                <h3 class="card-question" id="cardFrontText">Cargando pregunta...</h3>
+              </div>
+              <div class="card-footer-tip">
+                <span>Haz clic o presiona <b>Espacio</b> para voltear</span>
+              </div>
+            </div>
+
+            <!-- Cara Posterior (Respuesta y Pista) -->
+            <div class="card-face card-face-back">
+              <div class="card-top-tag">
+                <span class="pill">Explicación Didáctica</span>
+                <span>Respuesta</span>
+              </div>
+              <div class="card-body">
+                <p class="card-answer" id="cardBackText">Cargando respuesta...</p>
+                <div class="card-hint-box" id="hintBox">
+                  <span class="hint-label">Pista didáctica / Analogía</span>
+                  <p id="cardHintText">Pista...</p>
+                </div>
+              </div>
+              <div class="card-footer-tip">
+                <span>Haz clic para volver a la pregunta</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Controles de Navegación de Flashcards (Se activan al hacer zoom) -->
+    <div class="desk-deck-controls" id="deckControls" style="display: none;">
+      <button class="control-btn" id="btnPrev" disabled>← Anterior</button>
+      <span class="card-counter" id="cardCounter">Tarjeta 1 de 4</span>
+      <button class="control-btn" id="btnFlip">Voltear Tarjeta</button>
+      <button class="control-btn" id="btnNext">Siguiente →</button>
+    </div>
+
+    <!-- Barra de Estado OCI -->
+    <div class="system-status-bar">
+      <div class="status-indicator">
+        <div class="status-dot"></div>
+        <span id="ociStatusText">Almacenamiento OCI: Conectado (Always Free)</span>
+      </div>
+      <div>
+        <span id="qualityScoreText">Score de Anclaje RAG: 98%</span>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Overlay de Carga -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="spinner"></div>
+    <h3 id="loadingStatusText" style="font-size: 1.1rem; font-weight: 600;">Enfocando módulo con RAG...</h3>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
