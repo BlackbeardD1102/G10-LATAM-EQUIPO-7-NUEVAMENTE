@@ -20,8 +20,8 @@ class Settings(BaseSettings):
     )
 
     # --- Aplicación ---
-    PROJECT_NAME: str = "G10 LATAM Equipo 7 API"
-    DESCRIPTION: str = "Backend del proyecto construido con FastAPI."
+    PROJECT_NAME: str = "NuevaMente API"
+    DESCRIPTION: str = "Backend de NuevaMente — flashcards educativas con IA."
     VERSION: str = "0.1.0"
     ENVIRONMENT: Literal["local", "development", "staging", "production"] = "local"
     DEBUG: bool = True

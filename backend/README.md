@@ -1,6 +1,9 @@
-# G10 LATAM Equipo 7 — Backend
+# NuevaMente — Backend
 
 Backend construido con **FastAPI**, validación y configuración con **Pydantic v2**.
+
+Este directorio es el backend del monorepo; el cliente web vive en [`../frontend`](../frontend).
+Todos los comandos de este README se ejecutan desde `backend/`.
 
 ## Stack
 
@@ -16,24 +19,25 @@ Backend construido con **FastAPI**, validación y configuración con **Pydantic 
 ## Estructura
 
 ```
-app/
-├── main.py                     # create_app(), middleware, lifespan
-├── core/
-│   ├── config.py               # Settings (pydantic-settings)
-│   ├── logging.py              # Configuración de logging
-│   └── exceptions.py           # Handlers de error → ErrorResponse
-├── api/v1/
-│   ├── router.py               # Agrega los routers de la v1
-│   └── endpoints/
-│       ├── health.py           # GET /health
-│       └── files.py            # POST /files/upload
-├── schemas/                    # Modelos Pydantic (contratos de la API)
-│   ├── common.py               # BaseSchema, ErrorResponse, Page[T]
-│   ├── health.py
-│   └── file.py
-└── services/
-    └── storage.py              # Guardado de archivos en disco
-tests/                          # Suite con pytest + TestClient
+backend/
+├── app/
+│   ├── main.py                 # create_app(), middleware, lifespan
+│   ├── core/
+│   │   ├── config.py           # Settings (pydantic-settings)
+│   │   ├── logging.py          # Configuración de logging
+│   │   └── exceptions.py       # Handlers de error → ErrorResponse
+│   ├── api/v1/
+│   │   ├── router.py           # Agrega los routers de la v1
+│   │   └── endpoints/
+│   │       ├── health.py       # GET /health
+│   │       └── files.py        # POST /files/upload
+│   ├── schemas/                # Modelos Pydantic (contratos de la API)
+│   │   ├── common.py           # BaseSchema, ErrorResponse, Page[T]
+│   │   ├── health.py
+│   │   └── file.py
+│   └── services/
+│       └── storage.py          # Guardado de archivos en disco
+└── tests/                      # Suite con pytest + TestClient
 ```
 
 La separación **endpoints → services → schemas** mantiene la lógica de negocio fuera de
@@ -42,6 +46,9 @@ la capa HTTP: cambiar el almacenamiento local por S3 solo toca `services/storage
 ## Puesta en marcha
 
 ```bash
+# 0. Situarse en el backend
+cd backend
+
 # 1. Entorno virtual
 python3 -m venv .venv
 source .venv/bin/activate
